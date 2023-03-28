@@ -9,6 +9,7 @@ import base64
 # --- PATH SETTINGS ---
 current_dir = Path(__file__).parent if "__file__" in locals() else Path.cwd()
 css_file = current_dir / "styles" / "main.css"
+resume_file = current_dir / "photo_size.jpg"
 profile_pic = current_dir / "photo_size.jpg"
 
 # --- GENERAL SETTINGS ---
