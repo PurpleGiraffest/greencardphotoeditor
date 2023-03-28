@@ -80,7 +80,7 @@ new_height = 600
 
 # Set the path for the input and output files
 # input_file = "dvlottery/donnex.jpg"
-output_file = "dvlottery/images/maintest.jpg"
+output_file = "dvlottery/maintest.jpg"
 
 def fix_image(upload):
     img = Image.open(upload)
