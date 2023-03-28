@@ -9,7 +9,6 @@ import base64
 # --- PATH SETTINGS ---
 current_dir = Path(__file__).parent if "__file__" in locals() else Path.cwd()
 css_file = current_dir / "styles" / "main.css"
-resume_file = current_dir / "photo_size.jpg"
 profile_pic = current_dir / "photo_size.jpg"
 
 # --- GENERAL SETTINGS ---
@@ -50,7 +49,11 @@ st.markdown("""
 
 # --- LOAD CSS, PDF & PROFIL PIC ---
 with open(css_file) as f:
-    st.markdown("<style>{}</style>".format(f.read()), unsafe_allow_html=True)
+    with open(css_file) as f:
+        st.markdown("<style>{}</style>".format(f.read()), unsafe_allow_html=True)
+    with open(resume_file, "rb") as pdf_file:
+        PDFbyte = pdf_file.read()
+    profile_pic = Image.open(profile_pic)
 
 # --- HERO SECTION ---
 st.header('Passport or Visa Photo in 2 Seconds')
@@ -67,7 +70,7 @@ st.write("## Remove background from your image")
 st.write(
     "Take an image with a smartphone or camera against any background, upload it here and instantly get a professional photo for your visa, passport or ID."
 )
-#st.write("## Upload and download :gear:")
+st.write("## Upload and download :gear:")
 
 
 # Set the desired dimensions for the portrait image
@@ -110,7 +113,7 @@ def fix_image(upload):
     back_im.paste(im2, (70, 30))
     back_im.save(output_file, quality=95)
 
-    #col2.write("Fixed Image :wrench:")
+    col2.write("Fixed Image :wrench:")
     col2.image(back_im)
     st.markdown("\n")
     st.download_button("Download fixed image", "maintest", "image/jpg")
