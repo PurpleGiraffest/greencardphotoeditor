@@ -140,7 +140,7 @@ my_upload = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 if my_upload is not None:
     fix_image(upload=my_upload)
 else:
-    fix_image("/dvlottery/donnex.jpg")
+    fix_image("/donnex.jpg")
 
 # Removes the nav bar top padding
 st.write('<style>div.block-container{padding-top:4.0rem;}</style>', unsafe_allow_html=True)
