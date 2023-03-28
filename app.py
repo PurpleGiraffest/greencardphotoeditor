@@ -67,7 +67,7 @@ st.write("## Remove background from your image")
 st.write(
     "Take an image with a smartphone or camera against any background, upload it here and instantly get a professional photo for your visa, passport or ID."
 )
-st.write("## Upload and download :gear:")
+#st.write("## Upload and download :gear:")
 
 
 # Set the desired dimensions for the portrait image
@@ -110,7 +110,7 @@ def fix_image(upload):
     back_im.paste(im2, (70, 30))
     back_im.save(output_file, quality=95)
 
-    col2.write("Fixed Image :wrench:")
+    #col2.write("Fixed Image :wrench:")
     col2.image(back_im)
     st.markdown("\n")
     st.download_button("Download fixed image", "maintest", "image/jpg")
