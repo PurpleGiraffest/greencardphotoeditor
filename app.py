@@ -27,7 +27,7 @@ integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6J
             unsafe_allow_html=True)
 
 st.markdown("""
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color:#e9f2f4;">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color:#FFFF08;">
   <a class="navbar-brand" href="" target="_blank"><img src="https://greencardphotoeditor.com/greencard_logo.png" style="width:100px;height:100px;"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -143,7 +143,7 @@ else:
     fix_image("./dvlottery/fixed(12).png")
 
 # Removes the nav bar top padding
-st.write('<style>div.block-container{padding-top:4.0rem;}</style>', unsafe_allow_html=True)
+st.write('<style>div.block-container{padding-top:6.0rem;}</style>', unsafe_allow_html=True)
 
 st.write("Important Notice: The selection process for the DV lottery is the sole responsibility of the US Government. "
          "Using the Greencard Photo Editor website does not guarantee success in the DV lottery application process."
