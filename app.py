@@ -6,7 +6,7 @@ from PIL import Image
 from io import BytesIO
 import base64
 from PIL.ExifTags import TAGS
-import pesapal
+
 
 # --- PATH SETTINGS ---
 current_dir = Path(__file__).parent if "__file__" in locals() else Path.cwd()
@@ -177,18 +177,6 @@ def fix_image(upload):
         if isinstance(data, bytes):
             data = data.decode()
         print(f"{tag:25}: {data}")
-
-
-
-#Pesapal Intergration
-
-consumer_key = 'consumer_key: qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW'
-consumer_secret = 'osGQ364R49cXKeOYSpaOnT++rHs='
-callback_url = 'https://your-callback-url.com'
-
-pesapal.consumer_key = consumer_key
-pesapal.consumer_secret = consumer_secret
-pesapal.callback_url = callback_url
 
 
     #To remove the watermark when the payment is made, you can simply
