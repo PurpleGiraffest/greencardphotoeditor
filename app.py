@@ -95,12 +95,12 @@ def fix_image(upload):
     img.info['dpi'] = dpi
 
     # Resize the image to the desired dimensions
-    img = img.resize((1100, 1100))
+    img = img.resize((800, 800))
     # Find the center of the image
     center_x, center_y = img.size[0] / 2, img.size[1] / 2
 
     # Calculate the size of the head based on 50% of the image size
-    head_size = min(center_x, center_y) * 0.98
+    head_size = min(center_x, center_y) * 0.85
 
     # Crop the image around the center to the size of the head
     left = center_x - head_size
@@ -197,7 +197,7 @@ my_upload = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 if my_upload is not None:
     fix_image(upload=my_upload)
 else:
-    fix_image("./dvlottery/fixed(12).png")
+    fix_image("./dvlottery/donnex.jpg")
 
 # Removes the nav bar top padding
 st.write('<style>div.block-container{padding-top:6.0rem;}</style>', unsafe_allow_html=True)
