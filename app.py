@@ -5,6 +5,8 @@ from rembg import remove
 from PIL import Image
 from io import BytesIO
 import base64
+from PIL.ExifTags import TAGS
+import pesapal
 
 # --- PATH SETTINGS ---
 current_dir = Path(__file__).parent if "__file__" in locals() else Path.cwd()
@@ -75,12 +77,13 @@ st.write("## Upload and download :gear:")
 
 
 # Set the desired dimensions for the portrait image
-new_width = 600
-new_height = 600
+# new_width = 1200
+# new_height = 1200
 
 # Set the path for the input and output files
 # input_file = "dvlottery/donnex.jpg"
-output_file = "dvlottery/maintest.jpg"
+with_mark = "dvlottery/withwatermark.jpg"
+fixed_image = "dvlottery/withoutwatermark.jpg"
 
 def fix_image(upload):
     img = Image.open(upload)
@@ -90,10 +93,24 @@ def fix_image(upload):
 
     dpi = (300, 300)
     img.info['dpi'] = dpi
-    # Resize the image to the desired dimensions
-    img = img.resize((new_width, new_height))
 
     # Resize the image to the desired dimensions
+    img = img.resize((1100, 1100))
+    # Find the center of the image
+    center_x, center_y = img.size[0] / 2, img.size[1] / 2
+
+    # Calculate the size of the head based on 50% of the image size
+    head_size = min(center_x, center_y) * 0.98
+
+    # Crop the image around the center to the size of the head
+    left = center_x - head_size
+    top = center_y - head_size
+    right = center_x + head_size
+    bottom = center_y + head_size
+    img = img.crop((left, top, right, bottom))
+
+
+    # Resize the image to the desired format
     new_format = img.convert("RGB")
     img = remove(new_format)
 
@@ -104,22 +121,74 @@ def fix_image(upload):
     new_image.paste(img, (0, 0), img)
 
     # Convert the image to JPEG format and save it
-    new_image.convert("RGB").save(output_file, "JPEG")
+    new_image.convert("RGB").save(fixed_image, "JPEG")
 
     # Add watermark
-    im1 = Image.open(output_file)
+    im1 = Image.open(fixed_image)
     im2 = Image.open('dvlottery/greencardlogo2.jpg')
 
     back_im = im1.copy()
     back_im.paste(im2, (70, 30))
-    back_im.save(output_file, quality=95)
+    back_im.save(with_mark, quality=95)
 
     col2.write("Fixed Image :wrench:")
     col2.image(back_im)
     st.markdown("\n")
-    st.download_button("Download fixed image", "maintest", "image/jpg")
-    # convert_image(fixed),
 
+
+  
+    with open(with_mark, "rb") as file:
+      btn = st.download_button(
+            label="Download image",
+            data=file,
+            file_name="withwatermark.jpg",
+            mime="image/jpg"
+        )
+  # path to the image or video
+    imagename = "./dvlottery/withoutwatermark.jpg"
+
+# read the image data using PIL
+    image = Image.open(imagename)
+
+
+    # extract other basic metadata
+    info_dict = {
+        "Filename": image.filename,
+        "Image Size": image.size,
+        "Image Height": image.height,
+        "Image Width": image.width,
+        "Image Format": image.format,
+        "Image Mode": image.mode,
+        "Image is Animated": getattr(image, "is_animated", False),
+        "Frames in Image": getattr(image, "n_frames", 1)
+    }
+
+    for label,value in info_dict.items():
+        print(f"{label:25}: {value}")
+    # extract EXIF data
+    exifdata = image.getexif()
+
+    # iterating over all EXIF data fields
+    for tag_id in exifdata:
+        # get the tag name, instead of human unreadable tag id
+        tag = TAGS.get(tag_id, tag_id)
+        data = exifdata.get(tag_id)
+        # decode bytes 
+        if isinstance(data, bytes):
+            data = data.decode()
+        print(f"{tag:25}: {data}")
+
+
+
+#Pesapal Intergration
+
+consumer_key = 'consumer_key: qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW'
+consumer_secret = 'osGQ364R49cXKeOYSpaOnT++rHs='
+callback_url = 'https://your-callback-url.com'
+
+pesapal.consumer_key = consumer_key
+pesapal.consumer_secret = consumer_secret
+pesapal.callback_url = callback_url
 
 
     #To remove the watermark when the payment is made, you can simply
