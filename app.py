@@ -86,42 +86,47 @@ with_mark = "dvlottery/withwatermark.jpg"
 fixed_image = "dvlottery/withoutwatermark.jpg"
 
 def fix_image(upload):
-    img = Image.open(upload)
+    image = Image.open(upload)
 
     col1.write("Original Image :camera:")
-    col1.image(img)
+    col1.image(image)
 
-    dpi = (300, 300)
-    img.info['dpi'] = dpi
+    dpi = (300)
+    image.info['dpi'] = dpi
 
-    # Resize the image to the desired dimensions
-    img = img.resize((800, 800))
-    # Find the center of the image
-    center_x, center_y = img.size[0] / 2, img.size[1] / 2
+    #Resize the image to the desired format
+    new_format = image.convert("RGB")
+    image = remove(new_format)
 
-    # Calculate the size of the head based on 50% of the image size
-    head_size = min(center_x, center_y) * 0.85
-
-    # Crop the image around the center to the size of the head
-    left = center_x - head_size
-    top = center_y - head_size
-    right = center_x + head_size
-    bottom = center_y + head_size
-    img = img.crop((left, top, right, bottom))
-
-
-    # Resize the image to the desired format
-    new_format = img.convert("RGB")
-    img = remove(new_format)
+    # Resize the image to 1200x1200 pixels while maintaining aspect ratio
+    image.thumbnail((1200, 1200))
 
     # Create a new image with a white background
-    new_image = Image.new("RGBA", img.size, (255, 255, 255))
+    new_image = Image.new("RGB", (1200, 1200), (255, 255, 255))
 
+    # Calculate the position to center the image
+    x_offset = (1200 - image.width) // 2
+    y_offset = (1200 - image.height) // 2
+
+    # Paste the resized image onto the new image at the center position
     # Paste the original image onto the new image, but without transparency
-    new_image.paste(img, (0, 0), img)
+    #new_image.paste(image, (x_offset, y_offset))
+    new_image.paste(image, (x_offset, y_offset), image)
+
+    # Calculate the desired eye size (50% of the image size)
+    eye_size = max(new_image.width, new_image.height) // 2
+
+    # Crop the image around the center to the desired eye size
+    left = (new_image.width - eye_size) // 2
+    upper = (new_image.height - eye_size) // 2
+    right = left + eye_size
+    lower = upper + eye_size
+    eyes_image = new_image.crop((left, upper, right, lower))
+
 
     # Convert the image to JPEG format and save it
-    new_image.convert("RGB").save(fixed_image, "JPEG")
+    eyes_image.convert("RGB").save(fixed_image, "JPEG")
+
 
     # Add watermark
     im1 = Image.open(fixed_image)
@@ -197,7 +202,7 @@ my_upload = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 if my_upload is not None:
     fix_image(upload=my_upload)
 else:
-    fix_image("./dvlottery/donnex.jpg")
+    fix_image("./dvlottery/IMG_2254.JPG")
 
 # Removes the nav bar top padding
 st.write('<style>div.block-container{padding-top:6.0rem;}</style>', unsafe_allow_html=True)
